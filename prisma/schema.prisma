@@ -1,4 +1,3 @@
-// prisma/schema.prisma
 datasource db {
   provider  = "postgresql"
   url  	    = env("DATABASE_URL")
@@ -25,6 +24,7 @@ model User {
   accounts      Account[]
   isTwoFactorEnabled Boolean @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  aiResponses   AIResponse[]
 }
 
 model Account {
@@ -80,4 +80,21 @@ model TwoFactorConfirmation {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model AIResponse {
+  id        String   @id @default(cuid())
+  userId    String
+  topic     String
+  questions Question[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Question {
+  id         String   @id @default(cuid())
+  aiResponseId String
+  question   String
+  options    String[]
+  answer     String
+  aiResponse AIResponse @relation(fields: [aiResponseId], references: [id], onDelete: Cascade)
 }
