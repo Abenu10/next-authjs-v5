@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+
 const mockAIResponse = (topic) => {
   return [
     {
@@ -18,10 +19,32 @@ const mockAIResponse = (topic) => {
 const QuizPage = () => {
   const [topic, setTopic] = useState("");
   const [quizQuestions, setQuizQuestions] = useState([]);
+=======
+const quizQuestions = [
+  {
+    question: "What is the capital of France?",
+    options: ["Paris", "London", "Berlin", "Madrid"],
+    answer: "Paris",
+  },
+  {
+    question: "What is 2 + 2?",
+    options: ["3", "4", "5", "6"],
+    answer: "4",
+  },
+  {
+    question: "What is the largest planet in our solar system?",
+    options: ["Earth", "Mars", "Jupiter", "Saturn"],
+    answer: "Jupiter",
+  },
+];
+
+const QuizPage = () => {
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
+
 
   const handleTopicChange = (event) => {
     setTopic(event.target.value);
@@ -55,6 +78,7 @@ const QuizPage = () => {
 
   return (
     <div>
+
       <h1>AI-Powered Quiz App</h1>
       <div>
         <input
@@ -91,6 +115,31 @@ const QuizPage = () => {
             </form>
           )}
         </div>
+
+      <h1>Quiz App</h1>
+      {showResults ? (
+        <div>
+          <h2>Your Score: {score}</h2>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <h2>{quizQuestions[currentQuestionIndex].question}</h2>
+          {quizQuestions[currentQuestionIndex].options.map((option) => (
+            <div key={option}>
+              <label>
+                <input
+                  type="radio"
+                  value={option}
+                  checked={selectedOption === option}
+                  onChange={handleOptionChange}
+                />
+                {option}
+              </label>
+            </div>
+          ))}
+          <button type="submit">Next</button>
+        </form>
+
       )}
     </div>
   );
